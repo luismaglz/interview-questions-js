@@ -1,9 +1,9 @@
-const axios = require('axios');
-
 // Import stylesheets
 import './style.css';
+import axios from 'axios';
 
-// Shape returned by IMDB
+// Tasks
+// I movie interface returned by IMDB
 // interface IMovie {
 //   title: string;
 //   description: string;
@@ -18,32 +18,50 @@ import './style.css';
 //   results: IMovie[];
 // }
 
-async function fetchData(htmlElement, ev) {
-  const input = document.getElementById('data-input');
+async function fetchData(element: HTMLElement, ev: MouseEvent): Promise<void> {
+  const input = document.getElementById('data-input') as HTMLInputElement;
   const inputValue = input.value;
+  const searchKeyword = 'batman';
   // endpoint
   const IMDB_API_SEARCH = 'https://imdb-api.com/en/API/SearchMovie/k_d3adyy0g/';
 
-  const response = await axios.get();
+  const response = await axios.get<IMDB_Response>(
+    `${IMDB_API_SEARCH}${inputValue || searchKeyword}`
+  );
 
   console.log(response);
-  // createAndRenderTable(response.data.results);
+  createAndRenderTable(response.data.results);
 }
 
-function createAndRenderTable(movies) {
+function createAndRenderTable(movies: IMovie[]): void {
   const tableContainer = document.getElementById('create-table-here');
-
-  // CREATE YOUR TABLE
-  // tableContainer.innerHTML = table;
+  const movieRows = movies.map((movie) => {
+    return `
+    <tr>
+      <td><img src="${movie.image}" class="movie-image" width="50px" height="50px"></td>
+      <td>${movie.title}</td>
+      <td>${movie.description}</td>
+   </tr>`;
+  });
+  const table = `
+  <table class="movie-table">
+    <tr>
+      <td>Title</td>
+      <td>description</td>
+    </tr>
+    ${movieRows.join('')}
+  </table>
+  `;
+  tableContainer.innerHTML = table;
 }
 
-function initialize() {
+function initialize(): void {
   const buttonElement = document.getElementById('fetch-data-button');
   buttonElement.addEventListener('click', fetchData);
 }
 
 // Write TypeScript code!
-const appDiv = document.getElementById('app');
+const appDiv: HTMLElement = document.getElementById('app');
 appDiv.innerHTML = `
 <button id="fetch-data-button">Fetch Data</button><input id="data-input" placeholder="movie title goes here"></input>
 <div id="create-table-here">
