@@ -1,6 +1,7 @@
+const axios = require('axios');
+
 // Import stylesheets
 import './style.css';
-import axios from 'axios';
 
 // Tasks
 // I movie interface returned by IMDB
@@ -18,14 +19,14 @@ import axios from 'axios';
 //   results: IMovie[];
 // }
 
-async function fetchData(element: HTMLElement, ev: MouseEvent): Promise<void> {
-  const input = document.getElementById('data-input') as HTMLInputElement;
+async function fetchData(element, ev) {
+  const input = document.getElementById('data-input');
   const inputValue = input.value;
   const searchKeyword = 'batman';
   // endpoint
   const IMDB_API_SEARCH = 'https://imdb-api.com/en/API/SearchMovie/k_d3adyy0g/';
 
-  const response = await axios.get<IMDB_Response>(
+  const response = await axios.get(
     `${IMDB_API_SEARCH}${inputValue || searchKeyword}`
   );
 
@@ -33,7 +34,7 @@ async function fetchData(element: HTMLElement, ev: MouseEvent): Promise<void> {
   createAndRenderTable(response.data.results);
 }
 
-function createAndRenderTable(movies: IMovie[]): void {
+function createAndRenderTable(movies) {
   const tableContainer = document.getElementById('create-table-here');
   const movieRows = movies.map((movie) => {
     return `
@@ -55,13 +56,13 @@ function createAndRenderTable(movies: IMovie[]): void {
   tableContainer.innerHTML = table;
 }
 
-function initialize(): void {
+function initialize() {
   const buttonElement = document.getElementById('fetch-data-button');
   buttonElement.addEventListener('click', fetchData);
 }
 
 // Write TypeScript code!
-const appDiv: HTMLElement = document.getElementById('app');
+const appDiv = document.getElementById('app');
 appDiv.innerHTML = `
 <button id="fetch-data-button">Fetch Data</button><input id="data-input" placeholder="movie title goes here"></input>
 <div id="create-table-here">
