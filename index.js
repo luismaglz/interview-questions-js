@@ -22,7 +22,7 @@ async function fetchData(htmlElement, ev) {
   // endpoint
   const IMDB_API_SEARCH = 'https://jsonplaceholder.typicode.com/albums/';
 
-  const response = await axios.get();
+  const response = await axios.get(IMDB_API_SEARCH);
 
   console.log(response);
   // createAndRenderTable(response.data.results);
