@@ -51,4 +51,4 @@ create your table here
 </div>
 `;
 
-setTimeout(initialize, 10);
+initialize();
